@@ -1,8 +1,9 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing } from '../../constants/theme';
 import { useHomepage } from '../../hooks/useHomepage';
+import type { CuratedSection } from '../../hooks/useHomepage';
 import {
   EmptyState,
   ErrorBoundary,
@@ -17,6 +18,14 @@ import {
   RestaurantListing,
   WhatsOnYourMind,
 } from '../../components/homepage';
+
+type HomeSection =
+  | { type: 'top-banner' }
+  | { type: 'reorder' }
+  | { type: 'whats-on-your-mind' }
+  | { type: 'meal-for-one' }
+  | { type: 'curated-restaurants'; section: CuratedSection }
+  | { type: 'restaurant-listing' };
 
 function HomeScreen() {
   const insets = useSafeAreaInsets();
@@ -39,45 +48,75 @@ function HomeScreen() {
   }
 
   const { restaurant, mealForOne: mealForOneCfg } = data.feedConfig;
+  const sections: HomeSection[] = [
+    { type: 'top-banner' },
+    { type: 'reorder' },
+    { type: 'whats-on-your-mind' },
+    { type: 'meal-for-one' },
+    ...data.curatedSections.map(section => ({
+      type: 'curated-restaurants' as const,
+      section,
+    })),
+    { type: 'restaurant-listing' },
+  ];
+
+  const renderSection = ({ item }: { item: HomeSection }) => {
+    switch (item.type) {
+      case 'top-banner':
+        return <HomeTopSection bannerImageUrl={data.topBannerImage} />;
+      case 'reorder':
+        return (
+          <ReorderSection
+            config={restaurant.reOrderConfig}
+            restaurants={data.reorder}
+          />
+        );
+      case 'whats-on-your-mind':
+        return (
+          <WhatsOnYourMind
+            title={restaurant.curatedListGroups?.[0]?.name}
+            items={data.whatsOnYourMind}
+          />
+        );
+      case 'meal-for-one':
+        return (
+          <MealForOneSection
+            config={mealForOneCfg.curatedListDetailsList?.[0]}
+            items={data.mealForOne}
+          />
+        );
+      case 'curated-restaurants':
+        return (
+          <RestaurantCuratedSection
+            title={item.section.title}
+            restaurants={item.section.restaurants}
+          />
+        );
+      case 'restaurant-listing':
+        return <RestaurantListing restaurants={data.restaurants} />;
+      default:
+        return null;
+    }
+  };
+
+  const keyExtractor = (item: HomeSection) =>
+    item.type === 'curated-restaurants'
+      ? `${item.type}-${item.section.id}`
+      : item.type;
 
   return (
     <ErrorBoundary onReset={reload}>
       <View style={[styles.container, { paddingTop: insets.top }]}>
-        <ScrollView
+        <FlatList
+          data={sections}
+          renderItem={renderSection}
+          keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[
             styles.content,
             { paddingBottom: insets.bottom + spacing.xxl },
           ]}
-        >
-          <HomeTopSection bannerImageUrl={data.topBannerImage} />
-
-          <ReorderSection
-            config={restaurant.reOrderConfig}
-            restaurants={data.reorder}
-          />
-          
-             <WhatsOnYourMind
-            title={restaurant.curatedListGroups?.[0]?.name}
-            items={data.whatsOnYourMind}
-          />
-
-          <MealForOneSection
-            config={mealForOneCfg.curatedListDetailsList?.[0]}
-            items={data.mealForOne}
-          />
-
-          {data.curatedSections.map(section => (
-            <RestaurantCuratedSection
-              key={section.id}
-              title={section.title}
-              restaurants={section.restaurants}
-            />
-          ))}
-
-
-          <RestaurantListing restaurants={data.restaurants} />
-        </ScrollView>
+        />
       </View>
     </ErrorBoundary>
   );
