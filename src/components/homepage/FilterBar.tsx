@@ -1,14 +1,68 @@
 import React from 'react';
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { colors, radius, spacing, typography } from '../../constants/theme';
+import type { ImageSourcePropType } from 'react-native';
+import { colors, radius, spacing } from '../../constants/theme';
 
-const FILTERS = ['Filters', 'Sort by', 'Rating 4.0+', 'Pure Veg', 'Offers'];
+const googleIcon = require('../../../assets/icons/google.webp');
+const downArrowIcon = require('../../../assets/icons/down-arrow.png');
+const starIcon = require('../../../assets/icons/star.png');
+
+type FilterChipProps = {
+  label: string;
+  leftIcon?: ImageSourcePropType;
+  ratingIcon?: ImageSourcePropType;
+  rightIcon?: ImageSourcePropType;
+  variant?: 'default' | 'rating';
+};
+
+const FILTERS: FilterChipProps[] = [
+  { label: 'Sort by', rightIcon: downArrowIcon },
+  { label: '4+', leftIcon: googleIcon, ratingIcon: starIcon, variant: 'rating' },
+  { label: 'Under 30 mins' },
+  { label: 'Under \u20B9200' },
+];
+
+function FilterChip({
+  label,
+  leftIcon,
+  ratingIcon,
+  rightIcon,
+  variant = 'default',
+}: FilterChipProps) {
+  const isRating = variant === 'rating';
+
+  return (
+    <TouchableOpacity style={styles.chip} activeOpacity={0.8}>
+      {leftIcon ? (
+        <Image source={leftIcon} style={styles.leftIcon} resizeMode="contain" />
+      ) : null}
+      {ratingIcon ? (
+        <Image
+          source={ratingIcon}
+          style={styles.ratingIcon}
+          resizeMode="contain"
+        />
+      ) : null}
+      <Text style={[styles.chipText, isRating && styles.ratingText]}>
+        {label}
+      </Text>
+      {rightIcon ? (
+        <Image
+          source={rightIcon}
+          style={styles.rightIcon}
+          resizeMode="contain"
+        />
+      ) : null}
+    </TouchableOpacity>
+  );
+}
 
 /**
  * Filter chip row. This (together with "What's on your mind?") becomes a
@@ -19,12 +73,16 @@ function FilterBar() {
     <View style={styles.container}>
       <ScrollView
         horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.content}>
-        {FILTERS.map(label => (
-          <TouchableOpacity key={label} style={styles.chip} activeOpacity={0.8}>
-            <Text style={styles.chipText}>{label}</Text>
-          </TouchableOpacity>
+        showsHorizontalScrollIndicator={false}>
+        {FILTERS.map(filter => (
+          <FilterChip
+            key={filter.label}
+            label={filter.label}
+            leftIcon={filter.leftIcon}
+            ratingIcon={filter.ratingIcon}
+            rightIcon={filter.rightIcon}
+            variant={filter.variant}
+          />
         ))}
       </ScrollView>
     </View>
@@ -37,17 +95,45 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.border,
+    marginTop: 12,
+    marginBottom: 16,
   },
-  content: { paddingHorizontal: spacing.lg },
   chip: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E5E5E5',
     borderRadius: radius.pill,
+    flexDirection: 'row',
+    marginRight: spacing.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs + 2,
-    marginRight: spacing.sm,
+    paddingVertical: spacing.sm,
   },
-  chipText: { ...typography.caption, color: colors.textPrimary, fontWeight: '600' },
+  chipText: {
+    color: colors.textPrimary,
+    fontSize: 12,
+    fontWeight: '400',
+  },
+  leftIcon: {
+    height: 12,
+    width: 12,
+  },
+  ratingText: {
+    color: '#16A239',
+    fontSize: 12,
+    fontWeight: '600',
+    marginLeft: spacing.xs,
+  },
+  rightIcon: {
+    height: 12,
+    width: 12,
+    marginLeft: spacing.xs,
+  },
+  ratingIcon: {
+    height: 12,
+    marginLeft: spacing.xs,
+    width: 12,
+  },
 });
 
 export default React.memo(FilterBar);
