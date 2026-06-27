@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { CustomToggle } from '../common';
 import { icons } from '../../constants/assets';
-import { colors, spacing } from '../../constants/theme';
+import { colors, spacing, typography } from '../../constants/theme';
 import HomeSearchRow from './HomeSearchRow';
 
 const PINK = '#FA287B';
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.textPrimary,
     fontWeight: '400',
-    marginTop: 2,
+    marginTop: spacing.xxs,
   },
   rightItems: {
     flexDirection: 'row',
@@ -89,16 +89,16 @@ const styles = StyleSheet.create({
     marginRight: spacing.md,
   },
   vegLabel: {
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '700',
     color: colors.textPrimary,
-    marginBottom: 2,
+    marginBottom: spacing.xxs,
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',

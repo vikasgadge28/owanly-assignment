@@ -21,15 +21,13 @@ import {
   LoadingState,
   NonServiceableState,
 } from '../../components/common';
-import {
-  FilterBar,
-  HomeTopSection,
-  MealForOneSection,
-  ReorderSection,
-  RestaurantCuratedSection,
-  RestaurantListing,
-  WhatsOnYourMind,
-} from '../../components/homepage';
+import FilterBar from '../../components/homepage/FilterBar';
+import HomeTopSection from '../../components/homepage/HomeTopSection';
+import MealForOneSection from '../../components/homepage/MealForOneSection';
+import ReorderSection from '../../components/homepage/ReorderSection';
+import RestaurantCuratedSection from '../../components/homepage/RestaurantCuratedSection';
+import RestaurantListing from '../../components/homepage/RestaurantListing';
+import WhatsOnYourMind from '../../components/homepage/WhatsOnYourMind';
 
 type HomeSection =
   | { type: 'top-banner' }
@@ -214,7 +212,7 @@ function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FA287B' },
-  content: { backgroundColor: colors.background, marginTop: 24 },
+  content: { backgroundColor: colors.background, marginTop: spacing.xxl },
   stickyOverlay: {
     position: 'absolute',
     left: 0,
@@ -222,7 +220,7 @@ const styles = StyleSheet.create({
   },
   stickyItem: {
     backgroundColor: colors.background,
-    marginBottom: -8,
+    marginBottom: -spacing.sm,
   },
   stickyFilterBar: {
     backgroundColor: colors.background,

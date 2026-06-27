@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { icons } from '../../constants/assets';
-import { colors, radius, spacing } from '../../constants/theme';
+import { colors, radius, spacing, typography } from '../../constants/theme';
 import type { FoodItem } from '../../types/homepage';
 
 const PINK = '#FF297D';
@@ -176,14 +176,12 @@ const styles = StyleSheet.create({
   },
   nameFirstLine: {
     flex: 1,
-    fontSize: 14,
+    ...typography.cardTitle,
     fontWeight: '500',
-    color: colors.textPrimary,
   },
   nameSecondLine: {
-    fontSize: 14,
+    ...typography.cardTitle,
     fontWeight: '500',
-    color: colors.textPrimary,
   },
   priceRow: {
     flexDirection: 'row',
@@ -197,7 +195,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   pricePill: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
     borderRadius: radius.pill,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xxs,
@@ -208,7 +206,8 @@ const styles = StyleSheet.create({
     color: PINK,
   },
   originalPrice: {
-    fontSize: 14,
+    ...typography.price,
+    fontWeight: '400',
     color: colors.textSecondary,
     textDecorationLine: 'line-through',
   },
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
     height: 12,
   },
   ratingValue: {
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '600',
     color: colors.rating,
   },
@@ -242,12 +241,12 @@ const styles = StyleSheet.create({
     height: 14,   
   },
   eta: {
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '500',
     color: colors.textSecondary,
   },
   resName: {
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '600',
     color: colors.textTertiary,
   },

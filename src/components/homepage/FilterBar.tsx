@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import type { ImageSourcePropType } from 'react-native';
-import { colors, radius, spacing } from '../../constants/theme';
+import { colors, radius, spacing, typography } from '../../constants/theme';
 
 const googleIcon = require('../../../assets/icons/google.webp');
 const downArrowIcon = require('../../../assets/icons/down-arrow.png');
@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     paddingVertical: spacing.sm,
     borderBottomColor: colors.border,
-    marginTop: 12,
-    marginBottom: 16,
+    marginTop: spacing.md,
+    marginBottom: spacing.lg,
   },
   chip: {
     alignItems: 'center',
@@ -109,9 +109,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   chipText: {
+    ...typography.caption,
     color: colors.textPrimary,
-    fontSize: 12,
-    fontWeight: '400',
   },
   leftIcon: {
     height: 12,

@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     borderWidth: 4,
     borderColor: '#FFF8E6',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

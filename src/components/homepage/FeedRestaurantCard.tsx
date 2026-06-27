@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { colors, radius, spacing } from '../../constants/theme';
+import { colors, radius, spacing, typography } from '../../constants/theme';
 import {
   getBadgeLabel,
   getCuisineLine,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#FFFFFF',
+    borderColor: colors.surface,
     borderRadius: spacing.lg,
     paddingHorizontal: spacing.xs + 2,
     paddingVertical: spacing.xs,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   highlightText: {
     flex: 1,
-    color: '#FFFFFF',
+    color: colors.star,
     fontSize: 12,
     fontWeight: '500',
     paddingHorizontal: spacing.sm,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   },
   dotActive: {
     width: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
   },
   body: {
     flexDirection: 'row',
@@ -193,14 +193,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   distance: {
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '600',
     color: colors.textSecondary,
     textAlign: 'right',
   },
   area: {
+    ...typography.caption,
     flexShrink: 1,
-    fontSize: 12,
     fontWeight: '600',
     color: colors.textTertiary,
     textAlign: 'left',

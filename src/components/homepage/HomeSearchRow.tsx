@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 24,
+    marginTop: spacing.xxl,
     gap: spacing.md,
   },
   searchBar: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
     borderRadius: radius.pill,
     paddingHorizontal: spacing.xxl,
     height: 42,

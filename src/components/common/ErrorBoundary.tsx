@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     borderRadius: radius.pill,
   },
-  buttonText: { color: '#FFFFFF', fontWeight: '700', fontSize: 14 },
+  buttonText: { ...typography.price, color: colors.star },
 });
 
 export default ErrorBoundary;

@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { colors, spacing, typography } from '../../constants/theme';
+import { colors, typography } from '../../constants/theme';
 import type { CuratedListItem } from '../../types/homepage';
 
 interface Props {
@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
   container: { alignItems: 'center' },
   image: { backgroundColor: 'transparent', height: 86, width: 72 },
   label: {
-    color: colors.textSecondary,
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '600',
+    color: colors.textSecondary,
     textAlign: 'center',
   },
 });

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { icons } from '../../constants/assets';
-import { radius, spacing } from '../../constants/theme';
+import { radius, spacing, typography } from '../../constants/theme';
 import HorizontalCarousel from './HorizontalCarousel';
 import TopDealFoodCard from './TopDealFoodCard';
 import type { CuratedListDetail, FoodItem } from '../../types/homepage';
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: radius.xl,
     marginHorizontal: spacing.lg,
-    marginTop: 16,
+    marginTop: spacing.lg,
     marginBottom: spacing.xl,
     paddingTop: spacing.lg,
     paddingBottom: spacing.lg,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     gap: spacing.xxs,
   },
   seeAllText: {
-    fontSize: 13,
+    ...typography.body,
     fontWeight: '600',
     color: PINK,
   },

@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -spacing.xs,
     alignSelf: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: radius.md,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
   },
-  addText: { color: colors.primary, fontWeight: '700', fontSize: 13 },
+  addText: { ...typography.body, fontWeight: '700', color: colors.primary },
   customise: { color: colors.textTertiary, fontSize: 8 },
   body: { paddingTop: spacing.md },
   row: {

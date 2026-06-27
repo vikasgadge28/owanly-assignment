@@ -9,7 +9,6 @@ export const colors = {
   surface: '#FFFFFF',
   surfaceMuted: '#F5F5F7',
   primary: '#E23744',
-  primaryDark: '#C72C38',
   textPrimary: '#333333',
   textSecondary: '#666666',
   textTertiary: '#9A9AA0',
@@ -19,8 +18,6 @@ export const colors = {
   rating: '#1BA672',
   ratingPoor: '#E2A23B',
   star: '#FFFFFF',
-  overlay: 'rgba(0,0,0,0.45)',
-  skeleton: '#ECECEE',
   darkBackGround: '#D9D9D9',
 } as const;
 
@@ -32,7 +29,6 @@ export const spacing = {
   lg: 16,
   xl: 20,
   xxl: 24,
-  xxxl: 32,
 } as const;
 
 export const radius = {

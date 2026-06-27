@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 3,
-    backgroundColor: '#666666',
+    backgroundColor: colors.textSecondary,
     marginHorizontal: spacing.xxs,
   },
   etaIcon: {
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
     marginTop: spacing.xxs,
   },
   priceLine: {
-    marginTop: spacing.sm,
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '600',
     color: colors.textSecondary,
+    marginTop: spacing.sm,
   },
   lastOrderTag: {
-    fontSize: 12,
+    ...typography.caption,
     fontWeight: '600',
     color: colors.textSecondary,
     marginTop: spacing.sm,

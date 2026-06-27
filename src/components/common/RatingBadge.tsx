@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: radius.sm,
     paddingHorizontal: spacing.xs + 1,
-    paddingVertical: 2,
+    paddingVertical: spacing.xxs,
   },
-  value: { color: '#FFFFFF', fontSize: 11, fontWeight: '700' },
-  star: { color: '#FFFFFF', fontSize: 9, marginLeft: 2 },
+  value: { color: colors.star, fontSize: 11, fontWeight: '700' },
+  star: { color: colors.star, fontSize: 9, marginLeft: spacing.xxs },
   count: {
     color: colors.textTertiary,
     fontSize: 11,

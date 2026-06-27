@@ -16,7 +16,7 @@ const VARIANTS = {
     trackWidth: 32,
     trackHeight: 16,
     trackPadding: 2,
-    trackColors: { on: '#22C55E', off: '#FFFFFF' },
+    trackColors: { on: '#22C55E', off: colors.surface },
   },
   price: {
     trackWidth: 132,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     right: 14,
   },
   thumb: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.surface,
   },
   vegThumb: {
     shadowColor: '#000000',
