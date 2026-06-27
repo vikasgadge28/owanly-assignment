@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import type { ViewToken } from 'react-native';
 import Animated, {
   FadeInUp,
@@ -159,9 +159,24 @@ function HomeScreen() {
       ? `${item.type}-${item.section.id}`
       : item.type;
 
+  const isStickyVisible = showWhatsSticky || showFilterSticky;
+
   return (
     <ErrorBoundary onReset={reload}>
-      <View style={[styles.container, { paddingTop: insets.top }]}>
+      <StatusBar
+        barStyle={isStickyVisible ? 'dark-content' : 'light-content'}
+        backgroundColor={isStickyVisible ? colors.background : '#FA287B'}
+        animated
+      />
+      <View
+        style={[
+          styles.container,
+          {
+            paddingTop: insets.top,
+            backgroundColor: isStickyVisible ? colors.background : '#FA287B',
+          },
+        ]}
+      >
         <Animated.FlatList
           data={sections}
           renderItem={renderSection}
