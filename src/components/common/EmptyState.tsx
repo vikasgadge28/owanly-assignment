@@ -25,12 +25,13 @@ function EmptyState({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.xxl,
   },
   icon: { fontSize: 40, marginBottom: spacing.md },
-  title: { ...typography.h2, marginBottom: spacing.xs },
+  title: {  fontSize: 18, fontWeight: '700', color: 'white', marginBottom: spacing.xs },
   message: {
     ...typography.body,
     textAlign: 'center',
