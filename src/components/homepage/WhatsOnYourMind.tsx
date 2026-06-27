@@ -9,6 +9,7 @@ import type { CuratedListItem } from '../../types/homepage';
 interface Props {
   title?: string;
   items: CuratedListItem[];
+  showTitle?: boolean;
 }
 
 /**
@@ -16,13 +17,13 @@ interface Props {
  * config (curatedListGroups) provides the ordered ids; curated_list_details
  * provides display data. Rendered as a horizontal carousel for now.
  */
-function WhatsOnYourMind({ title = "What's on your mind?", items }: Props) {
+function WhatsOnYourMind({ title = "What's on your mind?", items, showTitle = true }: Props) {
   if (!items?.length) {
     return null;
   }
   return (
     <View style={styles.container}>
-      <SectionHeader title={title} paddingLeft={26} />
+      {showTitle && <SectionHeader title={title} paddingLeft={26} />}
       <HorizontalCarousel
         data={items}
         keyExtractor={item => item.id}
@@ -35,7 +36,7 @@ function WhatsOnYourMind({ title = "What's on your mind?", items }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { marginBottom: 32,},
+  container: { paddingBottom: 8},
 });
 
 export default React.memo(WhatsOnYourMind);

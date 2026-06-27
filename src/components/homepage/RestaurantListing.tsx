@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
+import type { AnimatedRef } from 'react-native-reanimated';
 import { spacing, typography } from '../../constants/theme';
 import RestaurantCard from './RestaurantCard';
 import type { RestaurantEntity } from '../../types/homepage';
@@ -7,6 +9,8 @@ import FilterBar from './FilterBar';
 interface Props {
   restaurants: RestaurantEntity[];
   title?: string;
+  /** Lets HomeScreen measure the FilterBar to drive its sticky header. */
+  filterBarRef?: AnimatedRef<Animated.View>;
 }
 
 /**
@@ -17,6 +21,7 @@ interface Props {
 function RestaurantListing({
   restaurants,
   title = 'All restaurants',
+  filterBarRef,
 }: Props) {
   if (!restaurants?.length) {
     return null;
@@ -24,7 +29,9 @@ function RestaurantListing({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <FilterBar />
+      <Animated.View ref={filterBarRef}>
+        <FilterBar />
+      </Animated.View>
       {restaurants.map(restaurant => (
         <View key={restaurant.entityId} style={styles.cardWrap}>
           <RestaurantCard restaurant={restaurant} variant="feed" />

@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
     paddingVertical: spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.border,
     marginTop: 12,
     marginBottom: 16,

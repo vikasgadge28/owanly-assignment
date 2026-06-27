@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: radius.xl,
     marginHorizontal: spacing.lg,
+    marginTop: 16,
     marginBottom: spacing.xl,
     paddingTop: spacing.lg,
     paddingBottom: spacing.lg,

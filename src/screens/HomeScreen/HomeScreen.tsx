@@ -1,5 +1,16 @@
-import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import type { ViewToken } from 'react-native';
+import Animated, {
+  FadeInUp,
+  FadeOutUp,
+  LinearTransition,
+  measure,
+  runOnJS,
+  useAnimatedRef,
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing } from '../../constants/theme';
 import { useHomepage } from '../../hooks/useHomepage';
@@ -11,6 +22,7 @@ import {
   NonServiceableState,
 } from '../../components/common';
 import {
+  FilterBar,
   HomeTopSection,
   MealForOneSection,
   ReorderSection,
@@ -27,9 +39,49 @@ type HomeSection =
   | { type: 'curated-restaurants'; section: CuratedSection }
   | { type: 'restaurant-listing' };
 
+const WHATS_ON_YOUR_MIND: HomeSection['type'] = 'whats-on-your-mind';
+
 function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { status, data, reload } = useHomepage();
+
+  // Sticky headers shown when their source section scrolls out of view.
+  const [showWhatsSticky, setShowWhatsSticky] = useState(false);
+  const [showFilterSticky, setShowFilterSticky] = useState(false);
+  // Only reveal the "What's on your mind?" sticky after it has been seen once,
+  // so it never flashes on first mount before the user scrolls.
+  const hasSeenWhatsOnMind = useRef(false);
+
+  // The FilterBar is nested deep inside the restaurant-listing row, so we
+  // measure its on-screen position instead of relying on item viewability.
+  const filterBarRef = useAnimatedRef<Animated.View>();
+  const filterShown = useSharedValue(false);
+
+  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 10 }).current;
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      const isVisible = viewableItems.some(
+        token => (token.item as HomeSection)?.type === WHATS_ON_YOUR_MIND,
+      );
+      if (isVisible) {
+        hasSeenWhatsOnMind.current = true;
+        setShowWhatsSticky(false);
+      } else if (hasSeenWhatsOnMind.current) {
+        setShowWhatsSticky(true);
+      }
+    },
+  ).current;
+
+  const scrollHandler = useAnimatedScrollHandler(() => {
+    const measured = measure(filterBarRef);
+    if (measured !== null) {
+      const shouldShow = measured.pageY <= insets.top;
+      if (shouldShow !== filterShown.value) {
+        filterShown.value = shouldShow;
+        runOnJS(setShowFilterSticky)(shouldShow);
+      }
+    }
+  });
 
   if (status === 'loading') {
     return <LoadingState />;
@@ -93,7 +145,12 @@ function HomeScreen() {
           />
         );
       case 'restaurant-listing':
-        return <RestaurantListing restaurants={data.restaurants} />;
+        return (
+          <RestaurantListing
+            restaurants={data.restaurants}
+            filterBarRef={filterBarRef}
+          />
+        );
       default:
         return null;
     }
@@ -107,16 +164,49 @@ function HomeScreen() {
   return (
     <ErrorBoundary onReset={reload}>
       <View style={[styles.container, { paddingTop: insets.top }]}>
-        <FlatList
+        <Animated.FlatList
           data={sections}
           renderItem={renderSection}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
           contentContainerStyle={[
             styles.content,
             { paddingBottom: insets.bottom + spacing.xxl },
           ]}
         />
+        <View
+          pointerEvents="box-none"
+          style={[styles.stickyOverlay, { top: insets.top }]}
+        >
+          {showWhatsSticky && (
+            <Animated.View
+              entering={FadeInUp.duration(200)}
+              exiting={FadeOutUp.duration(150)}
+              layout={LinearTransition}
+              style={styles.stickyItem}
+            >
+              <WhatsOnYourMind
+                title={restaurant.curatedListGroups?.[0]?.name}
+                items={data.whatsOnYourMind}
+                showTitle={false}
+              />
+            </Animated.View>
+          )}
+          {showFilterSticky && (
+            <Animated.View
+              entering={FadeInUp.duration(200)}
+              exiting={FadeOutUp.duration(150)}
+              layout={LinearTransition}
+              style={styles.stickyFilterBar}
+            >
+              <FilterBar />
+            </Animated.View>
+          )}
+        </View>
       </View>
     </ErrorBoundary>
   );
@@ -125,6 +215,19 @@ function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FA287B' },
   content: { backgroundColor: colors.background, marginTop: 24 },
+  stickyOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+  },
+  stickyItem: {
+    backgroundColor: colors.background,
+    marginBottom: -8,
+  },
+  stickyFilterBar: {
+    backgroundColor: colors.background,
+    paddingLeft: spacing.lg,
+  },
 });
 
 export default HomeScreen;
